@@ -27,27 +27,24 @@ async def back_to_main(call: CallbackQuery):
 @router.callback_query(F.data == "catalog")
 async def show_catalog(call: CallbackQuery):
     if not CATALOG:
-        await call.message.edit_text("Каталог пуст. Добавьте товары в config.py")
-        return
-    # если уже на этом экране – не дёргаем
-    if call.message.text == "Выберите категорию:":
-        await call.answer()
+        await call.message.edit_text("Каталог пуст")
         return
     await call.message.edit_text("Выберите категорию:", reply_markup=catalog_keyboard())
     await call.answer()
 
 @router.callback_query(F.data.startswith("cat_"))
 async def show_items(call: CallbackQuery):
-    category_id = call.data.split("_")[1]
+    # Диагностика
+    print(f"DEBUG: call.data = {call.data}")
+    category_id = call.data[4:]  # отрезаем 'cat_'
+    print(f"DEBUG: category_id = '{category_id}'")
+    print(f"DEBUG: Доступные ключи CATALOG: {list(CATALOG.keys())}")
+    
     if category_id not in CATALOG:
-        await call.answer("Категория не найдена")
-        await show_catalog(call)
+        await call.answer(f"❌ Категория '{category_id}' не найдена. Доступны: {', '.join(CATALOG.keys())}")
         return
-    expected_text = f"Товары в {CATALOG[category_id]['name']}:"
-    if call.message.text == expected_text:
-        await call.answer()
-        return
-    await call.message.edit_text(expected_text, reply_markup=items_keyboard(category_id))
+    
+    await call.message.edit_text(f"Товары в {CATALOG[category_id]['name']}:", reply_markup=items_keyboard(category_id))
     await call.answer()
 
 @router.callback_query(F.data.startswith("item_"))
