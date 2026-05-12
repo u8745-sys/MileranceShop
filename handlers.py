@@ -1,4 +1,4 @@
-﻿import uuid
+import uuid
 import aiohttp
 from aiogram import Router, F, Bot
 from aiogram.types import Message, CallbackQuery
