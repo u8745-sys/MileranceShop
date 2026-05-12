@@ -5,7 +5,7 @@ def main_menu():
     buttons = [
         [InlineKeyboardButton(text=" Каталог", callback_data="catalog")],
         [InlineKeyboardButton(text=" Корзина", callback_data="view_cart")],
-        [InlineKeyboardButton(text=" Поддержка", url="https://t.me/ваш_юзернейм")]
+        [InlineKeyboardButton(text=" Поддержка", url="https://t.me/milerance")]
     ]
     return InlineKeyboardMarkup(inline_keyboard=buttons)
 
