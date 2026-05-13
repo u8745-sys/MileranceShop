@@ -1,4 +1,4 @@
-﻿import sqlite3
+import sqlite3
 import json
 import os
 
@@ -126,3 +126,9 @@ def remove_product_from_db(item_id):
 
 def get_all_products():
     return _load_products()
+    
+    def get_user_by_order_id(order_id):
+    with sqlite3.connect(DB_NAME) as conn:
+        cur = conn.execute("SELECT user_id FROM orders WHERE order_id = ?", (order_id,))
+        row = cur.fetchone()
+        return row[0] if row else None
