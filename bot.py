@@ -1,4 +1,4 @@
-﻿import asyncio
+import asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.client.telegram import TelegramAPIServer
 from config import BOT_TOKEN
@@ -16,6 +16,12 @@ async def main():
     dp.include_router(admin_router)
     print("✅ Бот запущен через зеркало!")
     await dp.start_polling(bot)
+    
+    import threading
+from webhook import run_webhook
+
+# Запускаем веб‑сервер в отдельном потоке
+threading.Thread(target=run_webhook, daemon=True).start()
 
 if __name__ == "__main__":
     asyncio.run(main())
